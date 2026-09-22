@@ -171,6 +171,12 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
         <input type="number" id="phaseNum" min="0" max="360" step="1" value="0" aria-label="初相位数值">
       </div>
 
+      <label>起点位置</label>
+      <div class="seg">
+        <button type="button" id="btnGapMid" class="on">间隔正中</button>
+        <button type="button" id="btnSymStart">符号起点</button>
+      </div>
+
       <label>阅读方向</label>
       <div class="seg">
         <button type="button" id="btnCW" class="on">顺时针 ↻</button>
@@ -189,7 +195,7 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
 
       <button id="save">保存为 PNG</button>
 
-      <p class="tip">圆点 · 占 1 个时间单位，长划 − 占 3 个；符号间 1、字母间 3、词间 7 个单位，整段序列按比例正好铺满 360°。起点刻度位于起点间隔（多词 7、单词 3 个单位）的正中，首末符号不会在起点处粘连。初相位按单位圆约定：0° 在 x 轴正方向（3 点钟），沿逆时针增加，范围 0°~360°。平头与圆角均严格保持 1/3/7 的时间比例；圆角下弧长不足笔画宽的符号会画成与笔画等粗的圆珠，点划粗细一致，间隔会被略微收窄。支持字母、数字与常用标点。</p>
+      <p class="tip">圆点 · 占 1 个时间单位，长划 − 占 3 个；符号间 1、字母间 3、词间 7 个单位，整段序列按比例正好铺满 360°。起点位置两种模式：「间隔正中」把起点刻度放在终点与起点之间间隔（多词 7、单词 3 个单位）的正中，首末符号不会在起点处粘连；「符号起点」让初相位正好是首个符号的起点，接缝间隔整体留在终点一侧。初相位按单位圆约定：0° 在 x 轴正方向（3 点钟），沿逆时针增加，范围 0°~360°。平头与圆角均严格保持 1/3/7 的时间比例；圆角下弧长不足笔画宽的符号会画成与笔画等粗的圆珠，点划粗细一致，间隔会被略微收窄。支持字母、数字与常用标点。</p>
     </aside>
 
     <main class="stage">
@@ -392,12 +398,14 @@ function bindBg(lightBtn, darkBtn, stage){
     refCircle: $('refCircle'),
     transparent: $('transparent'),
     btnCW: $('btnCW'), btnCCW: $('btnCCW'), marker: $('marker'),
+    btnGapMid: $('btnGapMid'), btnSymStart: $('btnSymStart'),
     btnButt: $('btnButt'), btnRound: $('btnRound'),
     morseText: $('morseText'), unitInfo: $('unitInfo'), skippedInfo: $('skippedInfo'),
     save: $('save')
   };
   let clockwise = true;
   let roundCap = false;
+  let seamMid = true; // true: 初相位位于接缝间隔正中；false: 初相位即首个符号的起点
 
   // 文本 → 摩斯时间单位序列：dot=1、dash=3、符号间隔=1、字母间隔=3、词间隔=7
   function encode(text) {
@@ -455,8 +463,10 @@ function bindBg(lightBtn, darkBtn, stage){
       return;
     }
     const unit = 2 * Math.PI / total;
-    // 单位圆相位约定：0° 在 x 轴正方向（3 点钟），沿逆时针增加（画布 y 向下，故取负号）
-    const base = -phaseDeg * Math.PI / 180 + dir * seam * unit / 2;
+    // 单位圆相位约定：0° 在 x 轴正方向（3 点钟），沿逆时针增加（画布 y 向下，故取负号）。
+    // 间隔正中：base 前移半个接缝，起点刻度落在末符号与首符号之间间隔的正中；
+    // 符号起点：不加偏移，初相位就是首个符号的起始边，接缝间隔整体留在终点一侧
+    const base = -phaseDeg * Math.PI / 180 + (seamMid ? dir * seam * unit / 2 : 0);
     els.unitInfo.textContent = '共 ' + total + ' 个时间单位，每单位 ' +
       (360 / total).toFixed(2) + '°，总角 360°';
 
@@ -565,6 +575,16 @@ function bindBg(lightBtn, darkBtn, stage){
   els.btnRound.addEventListener('click', () => {
     roundCap = true;
     els.btnRound.classList.add('on'); els.btnButt.classList.remove('on');
+    draw();
+  });
+  els.btnGapMid.addEventListener('click', () => {
+    seamMid = true;
+    els.btnGapMid.classList.add('on'); els.btnSymStart.classList.remove('on');
+    draw();
+  });
+  els.btnSymStart.addEventListener('click', () => {
+    seamMid = false;
+    els.btnSymStart.classList.add('on'); els.btnGapMid.classList.remove('on');
     draw();
   });
   els.save.addEventListener('click', () => {
