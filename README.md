@@ -10,12 +10,18 @@
 
 ## 使用
 
-直接用浏览器打开 `index.html` 即可。页面通过 hash 路由切换视图：`#/` 主页、`#/morse`、`#/pigpen`、`#/ascii`，顶栏导航仅在工具页显示。
+用浏览器访问站点即可；本地使用时也可以直接双击 `index.html`，无需服务器。页面通过 hash 路由切换视图：`#/` 主页、`#/morse`、`#/pigpen`、`#/ascii`，顶栏导航仅在工具页显示。
+
+## 部署
+
+纯静态站点，没有构建步骤，发布目录就是仓库根目录，可部署到 Netlify、GitHub Pages 等任意静态托管。仓库已带 `netlify.toml`，Netlify 导入后零配置；hash 路由不产生服务器端路径，无需重定向规则，无效路径由 `404.html` 引回首页。
 
 ## 目录结构
 
 ```text
 index.html            页面、样式与全部逻辑（单文件应用）
+404.html              无效路径跳回首页
+netlify.toml          Netlify 发布配置（根目录发布、无构建）
 fonts/                index.html 内嵌字体的源文件，两者内容一致
 scripts/
   embed_fonts.py      把 fonts/ 重新写入 index.html 的 FONT_B64
