@@ -68,6 +68,8 @@ input[type=number]:focus{outline:2px solid var(--accent);outline-offset:0;border
 .tip{font-size:12px;color:var(--muted);margin:16px 0 0}
 .stage{flex:1;display:flex;justify-content:center}
 canvas{background:#fff;border:1px solid var(--line);border-radius:14px;max-width:100%;height:auto;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.stage img{display:none;background:#fff;border:1px solid var(--line);border-radius:14px;max-width:100%;height:auto;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+@media (pointer:coarse){.stage canvas{display:none}.stage img{display:block}}
 
 /* ===== 字体工具页 ===== */
 .tool{display:flex;gap:24px;max-width:1180px;margin:0 auto;padding:24px;align-items:flex-start}
@@ -183,6 +185,7 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
 
       <label class="check"><input type="checkbox" id="refCircle" checked>显示参考圆（灰色辅助线）</label>
       <label class="check"><input type="checkbox" id="marker" checked>显示起点标记（红色刻度）</label>
+      <label class="check"><input type="checkbox" id="transparent">导出透明底 PNG</label>
 
       <button id="save">保存为 PNG</button>
 
@@ -191,6 +194,7 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
 
     <main class="stage">
       <canvas id="c"></canvas>
+      <img id="morseImg" alt="摩斯电码圆环效果图（长按可保存图片）">
     </main>
   </div>
 </section>
@@ -386,6 +390,7 @@ function bindBg(lightBtn, darkBtn, stage){
     text: $('text'), radius: $('radius'), stroke: $('stroke'), phase: $('phase'),
     radiusNum: $('radiusNum'), strokeNum: $('strokeNum'), phaseNum: $('phaseNum'),
     refCircle: $('refCircle'),
+    transparent: $('transparent'),
     btnCW: $('btnCW'), btnCCW: $('btnCCW'), marker: $('marker'),
     btnButt: $('btnButt'), btnRound: $('btnRound'),
     morseText: $('morseText'), unitInfo: $('unitInfo'), skippedInfo: $('skippedInfo'),
@@ -433,8 +438,11 @@ function bindBg(lightBtn, darkBtn, stage){
     els.skippedInfo.textContent = skipped.length ? '已忽略无法编码的字符：' + skipped.join(' ') : '';
 
     ctx.clearRect(0, 0, SIZE, SIZE);
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, SIZE, SIZE);
+    // 透明底导出：跳过白色填充；画布上的白底来自 CSS，仅用于预览，不影响导出像素
+    if (!els.transparent.checked) {
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, SIZE, SIZE);
+    }
 
     const total = segments.reduce((s, g) => s + g.units, 0);
     if (!total) {
@@ -443,6 +451,7 @@ function bindBg(lightBtn, darkBtn, stage){
       ctx.textAlign = 'center';
       ctx.fillText('请输入可编码的文字（字母 / 数字 / 常用标点）', CX, CY);
       els.unitInfo.textContent = '';
+      syncImg();
       return;
     }
     const unit = 2 * Math.PI / total;
@@ -506,11 +515,23 @@ function bindBg(lightBtn, darkBtn, stage){
       ctx.lineTo(CX + x * outer, CY + y * outer);
       ctx.stroke();
     }
+
+    syncImg();
   }
+
+  // 移动端长按保存：触屏设备上用 <img> 呈现同一画面（canvas 无法长按存图），
+  // 每次重绘后把画布导出为 data URL；桌面端 img 隐藏，不做无用导出
+  const coarsePointers = window.matchMedia('(pointer: coarse)');
+  const morseImg = $('morseImg');
+  function syncImg(){
+    if (coarsePointers.matches) morseImg.src = canvas.toDataURL('image/png');
+  }
+  if (coarsePointers.addEventListener) coarsePointers.addEventListener('change', syncImg);
 
   els.text.addEventListener('input', draw);
   els.marker.addEventListener('change', draw);
   els.refCircle.addEventListener('change', draw);
+  els.transparent.addEventListener('change', draw);
 
   // 滑块与数字输入框双向同步：数字框输入会夹取到滑块范围内
   function bindRange(range, num) {
