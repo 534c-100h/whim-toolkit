@@ -1,0 +1,78 @@
+/* ===== 基础与共用（沿用 morse-circle 的设计语言）===== */
+:root{
+  --bg:#f4f2ec; --panel:#ffffff; --ink:#1d2126; --line:#e3dfd5;
+  --accent:#2f6f6a; --danger:#c94f4f; --muted:#8a8577;
+}
+*{box-sizing:border-box}
+html{scrollbar-gutter:stable}
+body{margin:0;font:14px/1.6 system-ui,"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink)}
+
+/* ===== 顶栏 ===== */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:16px;color:var(--ink);text-decoration:none;letter-spacing:.3px}
+.brand em{font-style:normal;color:var(--accent)}
+.topbar nav{display:flex;gap:6px;flex-wrap:wrap}
+.topbar nav a{padding:6px 14px;border-radius:999px;text-decoration:none;color:var(--ink);font-size:13px;border:1px solid transparent}
+.topbar nav a:hover{background:#fff;border-color:var(--line)}
+.topbar nav a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.topbar nav.hide{visibility:hidden}
+
+/* ===== 视图切换 ===== */
+.view{display:none}
+.view.active{display:block}
+
+/* ===== 首页 ===== */
+.hero{max-width:980px;margin:0 auto;padding:52px 24px 4px}
+.hero h1{font-size:30px;margin:0 0 8px}
+.hero p{color:var(--muted);margin:0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;max-width:980px;margin:26px auto 0;padding:0 24px 36px}
+.card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;color:var(--ink);text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,.05);transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.09)}
+.card-icon{height:64px;display:flex;align-items:center;font-size:44px;line-height:1;color:var(--ink)}
+.card h2{font-size:16px;margin:12px 0 6px}
+.card p{margin:0;color:var(--muted);font-size:13px}
+.card .go{margin-top:auto;padding-top:14px;font-size:13px;color:var(--accent);font-weight:600}
+
+/* ===== 工具页共用：左侧控制面板 ===== */
+.panel{width:300px;flex:none;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;position:sticky;top:76px}
+h1{font-size:18px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:12px;margin:0 0 16px}
+label{display:block;font-size:13px;margin:14px 0 6px}
+input[type=text]{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px}
+input[type=text]:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+input[type=range]{flex:1;accent-color:var(--accent)}
+.row{display:flex;gap:10px;align-items:center}
+input[type=number]{width:80px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink)}
+input[type=number]:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{flex:1;padding:8px 0;border:0;background:transparent;font-size:13px;cursor:pointer;color:var(--ink)}
+.seg button.on{background:var(--accent);color:#fff}
+.check{display:flex;align-items:center;gap:8px;margin:16px 0 0;font-size:13px}
+.check input{accent-color:var(--accent)}
+.tip{font-size:12px;color:var(--muted);margin:16px 0 0}
+
+/* ===== 工具页共用：右侧展示区 ===== */
+.tool{display:flex;gap:24px;max-width:1180px;margin:0 auto;padding:24px;align-items:flex-start}
+.tmain{flex:1;min-width:0}
+textarea{width:100%;min-height:64px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;background:#fff;color:var(--ink)}
+textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.btn{width:100%;margin-top:18px;padding:9px 0;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;font-size:13px;cursor:pointer}
+.btn:hover{background:#000}
+.btn.ghost{margin-top:8px;background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:#f7f5ef}
+.hint{font-size:12px;color:var(--muted);margin:10px 0 0}
+.how{margin-top:14px;font-size:12px;color:var(--muted)}
+.how summary{cursor:pointer}
+.how p{margin:6px 0 0}
+.sample{background:#fff;border:1px solid var(--line);border-radius:14px;padding:34px;min-height:250px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.sample.dark{background:#1d2126;border-color:#1d2126;color:#f4f2ec}
+.sample p{margin:0;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.sec-title{margin:30px 0 12px;font-size:14px;font-weight:600;color:var(--muted)}
+.charmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:10px}
+.cm-cell{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 4px 7px;text-align:center}
+.cm-cell .g{display:flex;align-items:center;justify-content:center;height:46px;font-size:34px;line-height:1.1}
+.cm-cell .k{display:block;font-size:11px;color:var(--muted)}
+
+/* ===== 响应式 ===== */
+@media (max-width:900px){.app,.tool{flex-direction:column}.panel{width:100%;position:static}}

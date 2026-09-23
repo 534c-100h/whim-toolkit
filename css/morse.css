@@ -1,0 +1,13 @@
+/* ===== 摩斯电码圆环专属 ===== */
+.app{display:flex;gap:24px;max-width:1180px;margin:0 auto;padding:24px;align-items:flex-start}
+.morse-out{margin-top:10px;background:#f7f5ef;border:1px dashed var(--line);border-radius:8px;padding:8px 10px;font-family:ui-monospace,Consolas,monospace;font-size:13px;letter-spacing:1px;word-break:break-all;min-height:20px;color:#3d4450;white-space:pre-line}
+.unit-info{font-size:12px;color:var(--muted);margin-top:6px}
+.skipped{font-size:12px;color:var(--danger);margin-top:4px}
+.p-row{display:flex;gap:10px;align-items:center;margin:6px 0}
+.p-row .p-tag{flex:none;min-width:34px;font-size:12px;color:var(--muted)}
+#save{width:100%;margin-top:18px;padding:9px 0;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;font-size:13px;cursor:pointer}
+#save:hover{background:#000}
+.stage{flex:1;display:flex;justify-content:center}
+canvas{background:#fff;border:1px solid var(--line);border-radius:14px;max-width:100%;height:auto;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.stage img{display:none;background:#fff;border:1px solid var(--line);border-radius:14px;max-width:100%;height:auto;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+@media (pointer:coarse){.stage canvas{display:none}.stage img{display:block}}

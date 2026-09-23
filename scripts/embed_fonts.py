@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""把 fonts/ 下的字体文件以 base64 写入 index.html 的 FONT_B64 常量。
+"""把 fonts/ 下的字体文件以 base64 写入 js/fonts.js 的 FONT_B64 常量。
 
-替换 index.html 后字体内嵌数据与 fonts/ 保持一致；内容未变时重复执行无副作用。
+替换 js/fonts.js 后字体内嵌数据与 fonts/ 保持一致；内容未变时重复执行无副作用。
 """
 import base64
 import pathlib
@@ -19,7 +19,7 @@ FONTS = {
 
 
 def main():
-    target = ROOT / 'index.html'
+    target = ROOT / 'js' / 'fonts.js'
     html = target.read_text(encoding='utf-8')
     for key, rel in FONTS.items():
         path = ROOT / rel
@@ -29,7 +29,8 @@ def main():
         html, n = re.subn(rf"({re.escape(key)}: ')[^']*(')", rf'\g<1>{b64}\g<2>', html)
         if n != 1:
             raise SystemExit(f'FONT_B64.{key} 匹配到 {n} 处（应为 1），中止')
-    target.write_text(html, encoding='utf-8')
+    # 显式写 LF：Windows 下默认会转成 CRLF，导致内容未变时文件字节也在变
+    target.write_text(html, encoding='utf-8', newline='\n')
     print(f'已把 {len(FONTS)} 个字体文件写入 {target}')
 
 
