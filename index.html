@@ -252,31 +252,33 @@ MORSE RINGS</textarea>
 
     <main class="tmain">
       <div class="clock-wrap">
-        <svg id="ckSvg" class="clock-face" viewBox="0 0 300 300" role="img" aria-label="当前输入时刻的钟面示意">
-          <circle cx="150" cy="150" r="139" fill="none" stroke="#e3dfd5" stroke-width="1.5"/>
-          <g id="ckTicks"></g>
-          <line id="ckHandH" x1="150" y1="150" x2="150" y2="80" stroke="#1d2126" stroke-width="8" stroke-linecap="round"/>
-          <line id="ckHandM" x1="150" y1="150" x2="150" y2="42" stroke="#1d2126" stroke-width="5" stroke-linecap="round"/>
-          <line id="ckHandS" x1="150" y1="150" x2="150" y2="30" stroke="#c94f4f" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="150" cy="150" r="6" fill="#1d2126"/>
-          <circle cx="150" cy="150" r="2.4" fill="#fff"/>
-        </svg>
-        <table class="ang">
-          <thead>
-            <tr>
-              <th scope="col">指针</th>
-              <th scope="col">钟面约定<br><small>12 点为 0°，顺时针为正</small></th>
-              <th scope="col">数学约定<br><small>3 点（x 正轴）为 0°，逆时针为正</small></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><th scope="row">时针</th><td id="ckHc"></td><td id="ckHm"></td></tr>
-            <tr><th scope="row">分针</th><td id="ckMc"></td><td id="ckMm"></td></tr>
-            <tr><th scope="row">秒针</th><td id="ckSc"></td><td id="ckSm"></td></tr>
-          </tbody>
-        </table>
+        <div class="clock-main">
+          <svg id="ckSvg" class="clock-face" viewBox="0 0 300 300" role="img" aria-label="当前输入时刻的钟面示意">
+            <circle cx="150" cy="150" r="139" fill="none" stroke="#e3dfd5" stroke-width="1.5"/>
+            <g id="ckTicks"></g>
+            <line id="ckHandH" x1="150" y1="150" x2="150" y2="80" stroke="#1d2126" stroke-width="8" stroke-linecap="round"/>
+            <line id="ckHandM" x1="150" y1="150" x2="150" y2="42" stroke="#1d2126" stroke-width="5" stroke-linecap="round"/>
+            <line id="ckHandS" x1="150" y1="150" x2="150" y2="30" stroke="#c94f4f" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="150" cy="150" r="6" fill="#1d2126"/>
+            <circle cx="150" cy="150" r="2.4" fill="#fff"/>
+          </svg>
+          <table class="ang">
+            <thead>
+              <tr>
+                <th scope="col">指针</th>
+                <th scope="col">钟面约定<br><small>12 点为 0°，顺时针为正</small></th>
+                <th scope="col">数学约定<br><small>3 点（x 正轴）为 0°，逆时针为正</small></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">时针</th><td id="ckHc"></td><td id="ckHm"></td></tr>
+              <tr><th scope="row">分针</th><td id="ckMc"></td><td id="ckMm"></td></tr>
+              <tr><th scope="row">秒针</th><td id="ckSc"></td><td id="ckSm"></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="hint">两种约定是同一根指针的两种读法：数学角 = (90° − 钟面角) mod 360°；角度均落在 0°~360°（不含 360°）。</p>
       </div>
-      <p class="hint">两种约定是同一根指针的两种读法：数学角 = (90° − 钟面角) mod 360°；角度均落在 0°~360°（不含 360°）。</p>
     </main>
   </div>
 </section>
@@ -315,27 +317,29 @@ MORSE RINGS</textarea>
 
     <main class="tmain">
       <div class="date-wrap">
-        <svg id="dtSvg" class="date-ring" viewBox="0 0 300 300" role="img" aria-label="两个日期在年环上的位置与区间中点示意">
-          <circle cx="150" cy="150" r="139" fill="none" stroke="#e3dfd5" stroke-width="1.5"/>
-          <g id="dtTicks"></g>
-          <path id="dtArc" fill="none" stroke="rgba(47,111,106,.28)" stroke-width="16"/>
-          <line id="dtMidL1" stroke="#c94f4f" stroke-width="1.5"/>
-          <line id="dtMidL2" stroke="#c94f4f" stroke-width="1.5"/>
-          <circle id="dtDotA" r="5" fill="#1d2126" stroke="#fff" stroke-width="1.5"/>
-          <circle id="dtDotB" r="5" fill="#1d2126" stroke="#fff" stroke-width="1.5"/>
-          <circle id="dtDotM1" r="4" fill="#c94f4f" stroke="#fff" stroke-width="1.5"/>
-          <circle id="dtDotM2" r="4" fill="#c94f4f" stroke="#fff" stroke-width="1.5"/>
-        </svg>
-        <table class="res">
-          <tbody>
-            <tr><th scope="row">区间</th><td id="dtSpan"></td></tr>
-            <tr><th scope="row">相差天数</th><td id="dtDays"></td></tr>
-            <tr><th scope="row">中点日期</th><td id="dtMid"></td></tr>
-          </tbody>
-        </table>
+        <div class="date-main">
+          <svg id="dtSvg" class="date-ring" viewBox="0 0 300 300" role="img" aria-label="两个日期在年环上的位置与区间中点示意">
+            <circle cx="150" cy="150" r="139" fill="none" stroke="#e3dfd5" stroke-width="1.5"/>
+            <g id="dtTicks"></g>
+            <path id="dtArc" fill="none" stroke="rgba(47,111,106,.28)" stroke-width="16"/>
+            <line id="dtMidL1" stroke="#c94f4f" stroke-width="1.5"/>
+            <line id="dtMidL2" stroke="#c94f4f" stroke-width="1.5"/>
+            <circle id="dtDotA" r="5" fill="#1d2126" stroke="#fff" stroke-width="1.5"/>
+            <circle id="dtDotB" r="5" fill="#1d2126" stroke="#fff" stroke-width="1.5"/>
+            <circle id="dtDotM1" r="4" fill="#c94f4f" stroke="#fff" stroke-width="1.5"/>
+            <circle id="dtDotM2" r="4" fill="#c94f4f" stroke="#fff" stroke-width="1.5"/>
+          </svg>
+          <table class="res">
+            <tbody>
+              <tr><th scope="row">区间</th><td id="dtSpan"></td></tr>
+              <tr><th scope="row">相差天数</th><td id="dtDays"></td></tr>
+              <tr><th scope="row">中点日期</th><td id="dtMid"></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="hint" id="dtNote"></p>
+        <p class="hint err" id="dtErr" hidden></p>
       </div>
-      <p class="hint" id="dtNote"></p>
-      <p class="hint err" id="dtErr" hidden></p>
     </main>
   </div>
 </section>

@@ -55,6 +55,9 @@ input[type=number]:focus{outline:2px solid var(--accent);outline-offset:0;border
 /* ===== 工具页共用：右侧展示区 ===== */
 .tool{display:flex;gap:24px;max-width:1180px;margin:0 auto;padding:24px;align-items:flex-start}
 .tmain{flex:1;min-width:0}
+/* 时钟、日期两页：右列与左面板等高，白卡片填满右列，底边对齐 */
+#view-clock .tool,#view-dategap .tool{align-items:stretch}
+#view-clock .tmain,#view-dategap .tmain{display:flex;flex-direction:column}
 textarea{width:100%;min-height:64px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;background:#fff;color:var(--ink)}
 textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
 .btn{width:100%;margin-top:18px;padding:9px 0;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;font-size:13px;cursor:pointer}
