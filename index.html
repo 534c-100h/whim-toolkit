@@ -35,7 +35,7 @@ body{margin:0;font:14px/1.6 system-ui,"Segoe UI","Microsoft YaHei",sans-serif;ba
 .hero{max-width:980px;margin:0 auto;padding:52px 24px 4px}
 .hero h1{font-size:30px;margin:0 0 8px}
 .hero p{color:var(--muted);margin:0}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;max-width:980px;margin:26px auto 0;padding:0 24px 36px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;max-width:980px;margin:26px auto 0;padding:0 24px 36px}
 .card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;color:var(--ink);text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,.05);transition:transform .15s,box-shadow .15s}
 .card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.09)}
 .card-icon{height:64px;display:flex;align-items:center;font-size:44px;line-height:1;color:var(--ink)}
@@ -95,6 +95,18 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
 .cm-cell .g{display:flex;align-items:center;justify-content:center;height:46px;font-size:34px;line-height:1.1}
 .cm-cell .k{display:block;font-size:11px;color:var(--muted)}
 
+/* ===== 时钟指针角度 ===== */
+.clock-wrap{display:flex;gap:26px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.clock-face{width:min(300px,100%);height:auto;flex:none}
+.ang{flex:1;min-width:270px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.ang th,.ang td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:right}
+.ang thead th{font-size:12px;line-height:1.5;color:var(--muted);font-weight:600;vertical-align:bottom}
+.ang thead th small{font-weight:400}
+.ang tbody th{text-align:left;font-size:13px;font-weight:600;color:var(--muted)}
+.ang tbody td{font-size:17px;font-weight:600}
+.ang tbody tr:last-child th,.ang tbody tr:last-child td{border-bottom:0}
+input[type=number]:disabled{background:#f0ede4;color:var(--muted)}
+
 @media (max-width:900px){.app,.tool{flex-direction:column}.panel{width:100%;position:static}}
 </style>
 </head>
@@ -107,6 +119,7 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
       <a href="#/morse" data-nav="morse">摩斯圆环</a>
       <a href="#/pigpen" data-nav="pigpen">猪圈密码字体</a>
       <a href="#/ascii" data-nav="ascii">ASCII 二进制字体</a>
+      <a href="#/clock" data-nav="clock">时钟指针角度</a>
     </nav>
   </div>
 </header>
@@ -115,7 +128,7 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
 <section id="view-home" class="view active">
   <div class="hero">
     <h1>小工具箱</h1>
-    <p>编码可视化与密码字体——选择一个工具开始。</p>
+    <p>编码可视化、密码字体与小工具——选择一个工具开始。</p>
   </div>
   <div class="cards">
     <a class="card" href="#/morse">
@@ -136,6 +149,14 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
       <span class="card-icon" style="font-family:'Vertical ASCII'" aria-hidden="true">A</span>
       <h2>ASCII 二进制字体</h2>
       <p>Vertical ASCII：把每个字符画成一列 8 位二进制，方角 / 圆角两版，可试用并下载 TTF / WOFF。</p>
+      <span class="go">打开 →</span>
+    </a>
+    <a class="card" href="#/clock">
+      <span class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="48" height="48"><circle cx="24" cy="24" r="19" fill="none" stroke="#1d2126" stroke-width="3"/><line x1="24" y1="24" x2="14.9" y2="17.9" stroke="#1d2126" stroke-width="3.5" stroke-linecap="round"/><line x1="24" y1="24" x2="32.9" y2="16" stroke="#1d2126" stroke-width="3" stroke-linecap="round"/><line x1="24" y1="24" x2="24" y2="11" stroke="#c94f4f" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </span>
+      <h2>时钟指针角度</h2>
+      <p>输入时分秒，给出时针、分针、秒针在「12 点 = 0° 顺时针」与「3 点 = 0° 逆时针」两种约定下的角度，附钟面示意。</p>
       <span class="go">打开 →</span>
     </a>
   </div>
@@ -297,6 +318,59 @@ MORSE RINGS</textarea>
   </div>
 </section>
 
+<!-- ===== 时钟指针角度 ===== -->
+<section id="view-clock" class="view">
+  <div class="tool">
+    <aside class="panel">
+      <h1>时钟指针角度</h1>
+      <p class="sub">输入时分秒，计算三根指针在两种约定下的角度</p>
+
+      <label for="ckH">时（0–23）</label>
+      <input type="number" id="ckH" min="0" max="23" step="1" value="10" aria-label="时">
+
+      <label for="ckM">分（0–59）</label>
+      <input type="number" id="ckM" min="0" max="59" step="1" value="8" aria-label="分">
+
+      <label for="ckS">秒（0–59，可含小数）</label>
+      <input type="number" id="ckS" min="0" max="59" step="any" value="0" aria-label="秒">
+
+      <button class="btn" id="ckNow">填入当前时间</button>
+      <label class="check"><input type="checkbox" id="ckLive">跟随当前时间（实时刷新）</label>
+
+      <p class="tip">三根指针都连续转动：秒针每秒 6°；分针每分钟走 6°，且随秒每秒再推进 0.1°；时针每小时走 30°，并随分、秒连续推进。钟面角（12 点为 0°，顺时针为正）：秒针 = 6°×秒；分针 = 6°×(分 + 秒/60)；时针 = 30°×(时 mod 12 + 分/60 + 秒/3600)，结果统一归一到 0°~360°。数学约定（3 点即 x 轴正方向为 0°，逆时针为正）与钟面角描述同一根指针，换算：数学角 = (90° − 钟面角) mod 360°，其中 12 点方向即数学 90°。24 小时制输入会自动按 12 小时制折算，下午 3 点与凌晨 3 点针位相同。</p>
+    </aside>
+
+    <main class="tmain">
+      <div class="clock-wrap">
+        <svg id="ckSvg" class="clock-face" viewBox="0 0 300 300" role="img" aria-label="当前输入时刻的钟面示意">
+          <circle cx="150" cy="150" r="139" fill="none" stroke="#e3dfd5" stroke-width="1.5"/>
+          <g id="ckTicks"></g>
+          <line id="ckHandH" x1="150" y1="150" x2="150" y2="80" stroke="#1d2126" stroke-width="8" stroke-linecap="round"/>
+          <line id="ckHandM" x1="150" y1="150" x2="150" y2="42" stroke="#1d2126" stroke-width="5" stroke-linecap="round"/>
+          <line id="ckHandS" x1="150" y1="166" x2="150" y2="30" stroke="#c94f4f" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="150" cy="150" r="6" fill="#1d2126"/>
+          <circle cx="150" cy="150" r="2.4" fill="#fff"/>
+        </svg>
+        <table class="ang">
+          <thead>
+            <tr>
+              <th scope="col">指针</th>
+              <th scope="col">钟面约定<br><small>12 点为 0°，顺时针为正</small></th>
+              <th scope="col">数学约定<br><small>3 点（x 正轴）为 0°，逆时针为正</small></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">时针</th><td id="ckHc"></td><td id="ckHm"></td></tr>
+            <tr><th scope="row">分针</th><td id="ckMc"></td><td id="ckMm"></td></tr>
+            <tr><th scope="row">秒针</th><td id="ckSc"></td><td id="ckSm"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hint">两种约定是同一根指针的两种读法：数学角 = (90° − 钟面角) mod 360°；角度均落在 0°~360°（不含 360°）。</p>
+    </main>
+  </div>
+</section>
+
 <script>
 "use strict";
 
@@ -317,9 +391,9 @@ const FONT_B64 = {
   document.head.appendChild(style);
 })();
 
-/* ===== 路由（#/、#/morse、#/pigpen、#/ascii）===== */
+/* ===== 路由（#/、#/morse、#/pigpen、#/ascii、#/clock）===== */
 (function router(){
-  const VIEWS = ['home', 'morse', 'pigpen', 'ascii'];
+  const VIEWS = ['home', 'morse', 'pigpen', 'ascii', 'clock'];
   const navLinks = document.querySelectorAll('[data-nav]');
   function route(){
     let h = location.hash.replace(/^#\/?/, '');
@@ -772,6 +846,99 @@ function bindBg(lightBtn, darkBtn, stage){
   woffBtn.addEventListener('click', () => { const v = VARIANTS[variant]; downloadFont(v.base + '.woff', FONT_B64[v.woff], 'font/woff'); });
 
   render(); renderMap(); updateButtons();
+})();
+
+/* ===== 时钟指针角度 ===== */
+(function clockHands(){
+  const $ = id => document.getElementById(id);
+  const hEl = $('ckH'), mEl = $('ckM'), sEl = $('ckS');
+  const liveChk = $('ckLive');
+  const HANDS = {
+    H: { clock: $('ckHc'), math: $('ckHm'), line: $('ckHandH') },
+    M: { clock: $('ckMc'), math: $('ckMm'), line: $('ckHandM') },
+    S: { clock: $('ckSc'), math: $('ckSm'), line: $('ckHandS') }
+  };
+
+  // 表盘：60 个刻度 + 12/3/6/9 数字（构建一次）
+  (function buildFace(){
+    const NS = 'http://www.w3.org/2000/svg', C = 150, R = 139;
+    const g = $('ckTicks');
+    for (let i = 0; i < 60; i++) {
+      const a = i * Math.PI / 30, major = i % 5 === 0;
+      const r1 = R, r2 = R - (major ? 12 : 6);
+      const line = document.createElementNS(NS, 'line');
+      line.setAttribute('x1', (C + r1 * Math.sin(a)).toFixed(2));
+      line.setAttribute('y1', (C - r1 * Math.cos(a)).toFixed(2));
+      line.setAttribute('x2', (C + r2 * Math.sin(a)).toFixed(2));
+      line.setAttribute('y2', (C - r2 * Math.cos(a)).toFixed(2));
+      line.setAttribute('stroke', major ? '#1d2126' : '#d4cfc0');
+      line.setAttribute('stroke-width', major ? 2 : 1);
+      g.appendChild(line);
+    }
+    [['12', 150, 32], ['3', 268, 150], ['6', 150, 271], ['9', 32, 150]].forEach(([t, x, y]) => {
+      const text = document.createElementNS(NS, 'text');
+      text.setAttribute('x', x); text.setAttribute('y', y);
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('dominant-baseline', 'central');
+      text.setAttribute('font-size', '15');
+      text.setAttribute('fill', '#8a8577');
+      text.textContent = t;
+      g.appendChild(text);
+    });
+  })();
+
+  const norm360 = a => ((a % 360) + 360) % 360;
+  const toMath = clockA => norm360(90 - clockA); // 12 点方向即数学 90°
+  const fmt = a => (Math.round(a * 10000) / 10000) + '°';
+  const read = (el, min, max) => {
+    const v = parseFloat(el.value);
+    return Math.min(max, Math.max(min, Number.isNaN(v) ? 0 : v));
+  };
+
+  function update(){
+    const h = read(hEl, 0, 23), m = read(mEl, 0, 59), s = read(sEl, 0, 59);
+    // 三针连续转动：时针 30°/h 并随分秒推进，分针 6°/min 并随秒推进，秒针 6°/s
+    const angles = {
+      H: norm360((h % 12) * 30 + m * 0.5 + s / 120),
+      M: norm360(m * 6 + s * 0.1),
+      S: norm360(s * 6)
+    };
+    for (const k of Object.keys(angles)) {
+      const a = angles[k];
+      HANDS[k].clock.textContent = fmt(a);
+      HANDS[k].math.textContent = fmt(toMath(a));
+      HANDS[k].line.setAttribute('transform', 'rotate(' + a + ' 150 150)');
+    }
+  }
+
+  function fillNow(){
+    const d = new Date();
+    hEl.value = d.getHours(); mEl.value = d.getMinutes(); sEl.value = d.getSeconds();
+  }
+
+  for (const el of [hEl, mEl, sEl]) {
+    el.addEventListener('input', update);
+    el.addEventListener('change', () => { el.value = read(el, +el.min, +el.max); });
+  }
+
+  let timer = null;
+  function syncLive(){
+    if (liveChk.checked) {
+      hEl.disabled = mEl.disabled = sEl.disabled = true;
+      fillNow(); update();
+      timer = setInterval(() => { fillNow(); update(); }, 250);
+    } else {
+      hEl.disabled = mEl.disabled = sEl.disabled = false;
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+  }
+  liveChk.addEventListener('change', syncLive);
+  $('ckNow').addEventListener('click', () => {
+    liveChk.checked = false; syncLive();
+    fillNow(); update();
+  });
+
+  update();
 })();
 </script>
 </body>
