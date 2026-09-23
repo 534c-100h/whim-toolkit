@@ -1,0 +1,13 @@
+/* ===== 日期间隔与中点专属 ===== */
+.date-wrap{display:flex;gap:26px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.date-ring{width:min(300px,100%);height:auto;flex:none}
+.res{flex:1;min-width:260px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.res th,.res td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:right}
+.res tbody th{text-align:left;font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap}
+.res td{font-size:17px;font-weight:600}
+.res td small{display:block;margin-top:2px;font-size:12px;color:var(--muted);font-weight:400}
+.res tbody tr:last-child th,.res tbody tr:last-child td{border-bottom:0}
+.date-row{gap:8px}
+.date-row input[type=number]{width:72px}
+.date-row .unit{color:var(--muted);font-size:13px}
+.err{color:var(--danger)}

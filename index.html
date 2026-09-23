@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/morse.css">
 <link rel="stylesheet" href="css/clock.css">
+<link rel="stylesheet" href="css/dategap.css">
 </head>
 <body>
 
@@ -20,6 +21,7 @@
       <a href="#/pigpen" data-nav="pigpen">猪圈密码字体</a>
       <a href="#/ascii" data-nav="ascii">ASCII 二进制字体</a>
       <a href="#/clock" data-nav="clock">时钟指针角度</a>
+      <a href="#/dategap" data-nav="dategap">日期间隔与中点</a>
     </nav>
   </div>
 </header>
@@ -57,6 +59,14 @@
       </span>
       <h2>时钟指针角度</h2>
       <p>输入时分秒，给出时针、分针、秒针在「12 点 = 0° 顺时针」与「3 点 = 0° 逆时针」两种约定下的角度，附钟面示意。</p>
+      <span class="go">打开 →</span>
+    </a>
+    <a class="card" href="#/dategap">
+      <span class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="48" height="48"><circle cx="24" cy="24" r="17" fill="none" stroke="#1d2126" stroke-width="2.5"/><path d="M24 7 A17 17 0 1 1 18.2 40" fill="none" stroke="#2f6f6a" stroke-width="6" opacity=".3"/><circle cx="24" cy="7" r="3.2" fill="#1d2126"/><circle cx="18.2" cy="40" r="3.2" fill="#1d2126"/><circle cx="40.7" cy="27" r="2.8" fill="#c94f4f"/></svg>
+      </span>
+      <h2>日期间隔与中点</h2>
+      <p>输入两个只有月、日的日期：结束更早时自动按次年算相隔天数，并给出闭区间的正中日期（1 或 2 天），可选是否考虑闰年。</p>
       <span class="go">打开 →</span>
     </a>
   </div>
@@ -271,6 +281,65 @@ MORSE RINGS</textarea>
   </div>
 </section>
 
+<!-- ===== 日期间隔与中点 ===== -->
+<section id="view-dategap" class="view">
+  <div class="tool">
+    <aside class="panel">
+      <h1>日期间隔与中点</h1>
+      <p class="sub">输入两个只有月和日的日期，算相隔天数与区间中点</p>
+
+      <label>起始日期</label>
+      <div class="row date-row">
+        <input type="number" id="dtM1" min="1" max="12" step="1" value="10" aria-label="起始月">
+        <span class="unit">月</span>
+        <input type="number" id="dtD1" min="1" max="31" step="1" value="1" aria-label="起始日">
+        <span class="unit">日</span>
+      </div>
+
+      <label>结束日期</label>
+      <div class="row date-row">
+        <input type="number" id="dtM2" min="1" max="12" step="1" value="1" aria-label="结束月">
+        <span class="unit">月</span>
+        <input type="number" id="dtD2" min="1" max="31" step="1" value="1" aria-label="结束日">
+        <span class="unit">日</span>
+      </div>
+
+      <label>闰年</label>
+      <div class="seg">
+        <button type="button" id="dtLeap" class="on">考虑闰年</button>
+        <button type="button" id="dtNoLeap">不考虑闰年</button>
+      </div>
+
+      <p class="tip">相差天数 = 结束 − 起始：结束日期的月日在起始之前时理解为次年（如 10月1日 → 5月1日 计 213 天），同一天计 0 天。中点取闭区间 [起始, 结束]（含两端）的正中：相差天数为偶数时正中恰 1 天，为奇数时正中有 2 天。「考虑闰年」把两端年份都按 366 天处理：区间经过 2 月 29 日就多算 1 天，也允许输入 2 月 29 日；「不考虑闰年」都按 365 天处理，2 月一律 28 天，输入 2 月 29 日会提示无效。右侧年环从顶部 1 月 1 日起顺时针排布，绿弧为区间，墨点为两端日期，红点为中点。</p>
+    </aside>
+
+    <main class="tmain">
+      <div class="date-wrap">
+        <svg id="dtSvg" class="date-ring" viewBox="0 0 300 300" role="img" aria-label="两个日期在年环上的位置与区间中点示意">
+          <circle cx="150" cy="150" r="139" fill="none" stroke="#e3dfd5" stroke-width="1.5"/>
+          <g id="dtTicks"></g>
+          <path id="dtArc" fill="none" stroke="rgba(47,111,106,.28)" stroke-width="16"/>
+          <line id="dtMidL1" stroke="#c94f4f" stroke-width="1.5"/>
+          <line id="dtMidL2" stroke="#c94f4f" stroke-width="1.5"/>
+          <circle id="dtDotA" r="5" fill="#1d2126" stroke="#fff" stroke-width="1.5"/>
+          <circle id="dtDotB" r="5" fill="#1d2126" stroke="#fff" stroke-width="1.5"/>
+          <circle id="dtDotM1" r="4" fill="#c94f4f" stroke="#fff" stroke-width="1.5"/>
+          <circle id="dtDotM2" r="4" fill="#c94f4f" stroke="#fff" stroke-width="1.5"/>
+        </svg>
+        <table class="res">
+          <tbody>
+            <tr><th scope="row">区间</th><td id="dtSpan"></td></tr>
+            <tr><th scope="row">相差天数</th><td id="dtDays"></td></tr>
+            <tr><th scope="row">中点日期</th><td id="dtMid"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hint" id="dtNote"></p>
+      <p class="hint err" id="dtErr" hidden></p>
+    </main>
+  </div>
+</section>
+
 <!-- 脚本按依赖顺序引入：fonts → common → router → 各工具 -->
 <script src="js/fonts.js"></script>
 <script src="js/common.js"></script>
@@ -279,5 +348,6 @@ MORSE RINGS</textarea>
 <script src="js/pigpen.js"></script>
 <script src="js/ascii.js"></script>
 <script src="js/clock.js"></script>
+<script src="js/dategap.js"></script>
 </body>
 </html>

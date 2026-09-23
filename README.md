@@ -8,10 +8,11 @@
 | 猪圈密码字体 | Pigpen Cipher TTF：在线试用、字符映射表、字体文件下载 |
 | ASCII 二进制字体 | Vertical ASCII（方角 / 圆角两版）：在线试用，TTF / WOFF 下载 |
 | 时钟指针角度 | 输入时分秒，给出三针在钟面（12 点 = 0° 顺时针）与数学（3 点 = 0° 逆时针）两种约定下的角度，附钟面示意 |
+| 日期间隔与中点 | 输入两个只有月日的日期：算相隔天数（结束更早按次年）与闭区间中点（1 或 2 天），可选是否考虑闰年 |
 
 ## 使用
 
-用浏览器访问站点即可；本地使用时也可以直接双击 `index.html`，无需服务器。页面通过 hash 路由切换视图：`#/` 主页、`#/morse`、`#/pigpen`、`#/ascii`、`#/clock`，顶栏导航仅在工具页显示。
+用浏览器访问站点即可；本地使用时也可以直接双击 `index.html`，无需服务器。页面通过 hash 路由切换视图：`#/` 主页、`#/morse`、`#/pigpen`、`#/ascii`、`#/clock`、`#/dategap`，顶栏导航仅在工具页显示。
 
 ## 部署
 
@@ -25,6 +26,7 @@ css/
   base.css            共用样式：变量、顶栏、首页、面板与控件、工具页展示区
   morse.css           摩斯圆环专属样式
   clock.css           时钟页专属样式
+  dategap.css         日期间隔与中点页专属样式
 js/
   fonts.js            FONT_B64 字体内嵌数据与 @font-face 注入
   common.js           共用函数：escHtml、downloadFont、bindSize、bindBg
@@ -33,6 +35,7 @@ js/
   pigpen.js           猪圈密码字体
   ascii.js            ASCII 二进制字体
   clock.js            时钟指针角度
+  dategap.js          日期间隔与中点
 404.html              无效路径跳回首页
 netlify.toml          Netlify 发布配置（根目录发布、无构建）
 fonts/                js/fonts.js 内嵌字体的源文件，两者内容一致
