@@ -6,7 +6,7 @@
     square:  { family: "'Vertical ASCII'",         ttf: 'asciiTtf',   woff: 'asciiWoff',   base: 'VerticalASCII-Regular' },
     rounded: { family: "'Vertical ASCII Rounded'", ttf: 'roundedTtf', woff: 'roundedWoff', base: 'VerticalASCIIRounded-Regular' }
   };
-  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const CHARS = Array.from({ length: 94 }, (_, i) => String.fromCharCode(0x21 + i)).join('');
   let variant = 'square';
 
   const text = document.getElementById('abText');
